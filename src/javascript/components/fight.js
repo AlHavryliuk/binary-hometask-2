@@ -15,6 +15,7 @@ let winner;
 const initPlayers = (firstFighter, secondFighter) => {
     leftPlayer = {
         ...firstFighter,
+        uniqueID: `${firstFighter._id}left`,
         totalHealth: firstFighter.health,
         percentHealth: 100,
         activeBlock: false,
@@ -29,6 +30,7 @@ const initPlayers = (firstFighter, secondFighter) => {
     };
     rightPlayer = {
         ...secondFighter,
+        uniqueID: `${firstFighter._id}right`,
         totalHealth: secondFighter.health,
         percentHealth: 100,
         activeBlock: false,
@@ -80,7 +82,8 @@ export function getDamage(attacker, defender) {
     // Check crical damage and turn on if it is active
 
     if (attacker.imbaAttack.isActive) {
-        const playerToDamage = attacker._id === leftPlayer._id ? leftPlayer : rightPlayer;
+        // const playerToDamage = attacker._id === leftPlayer._id ? leftPlayer : rightPlayer;
+        const playerToDamage = attacker.uniqueID === leftPlayer.uniqueID ? leftPlayer : rightPlayer;
         damage = 2 * attacker.attack;
         playerToDamage.imbaAttack.canImbaAttack = false;
         playerToDamage.imbaAttack.isActive = false;
@@ -93,10 +96,12 @@ export function getDamage(attacker, defender) {
     }
 
     if (damage > 0) {
-        const playerToDamage = defender._id === leftPlayer._id ? leftPlayer : rightPlayer;
+        // const playerToDamage = defender._id === leftPlayer._id ? leftPlayer : rightPlayer;
+        const playerToDamage = defender.uniqueID === leftPlayer.uniqueID ? leftPlayer : rightPlayer;
         playerToDamage.health -= damage;
         playerToDamage.percentHealth = (playerToDamage.health / playerToDamage.totalHealth) * 100;
-        if (defender._id === leftPlayer._id) {
+        // if (defender._id === leftPlayer._id) {
+        if (defender.uniqueID === leftPlayer.uniqueID) {
             refs.leftPlayerHealth.style.width = `${
                 playerToDamage.percentHealth > 0 ? playerToDamage.percentHealth : 0
             }%`;
@@ -116,7 +121,8 @@ export function getDamage(attacker, defender) {
 // Set the attack cooldown for a player
 
 const setAttackCooldown = player => {
-    const actualPlayer = player._id === leftPlayer._id ? leftPlayer : rightPlayer;
+    // const actualPlayer = player._id === leftPlayer._id ? leftPlayer : rightPlayer;
+    const actualPlayer = player.uniqueID === leftPlayer.uniqueID ? leftPlayer : rightPlayer;
     actualPlayer.canAttack = true;
 };
 
@@ -125,7 +131,8 @@ const setAttackCooldown = player => {
 const checkComboAttack = (attacker, defender) => {
     if (attacker.imbaAttack.isBtnPressed1 && attacker.imbaAttack.isBtnPressed2 && attacker.imbaAttack.isBtnPressed3) {
         if (!attacker.imbaAttack.canImbaAttack) return;
-        const playerToDamage = attacker._id === leftPlayer._id ? leftPlayer : rightPlayer;
+        // const playerToDamage = attacker._id === leftPlayer._id ? leftPlayer : rightPlayer;
+        const playerToDamage = attacker.uniqueID === leftPlayer.uniqueID ? leftPlayer : rightPlayer;
         playerToDamage.imbaAttack.isActive = true;
         getDamage(attacker, defender);
     }
