@@ -45,14 +45,14 @@ const initPlayers = (firstFighter, secondFighter) => {
     };
 };
 
-// Initialize the players with their initial properties
+// Initialize the players` health
 
 const initRefs = () => {
     refs.leftPlayerHealth = document.getElementById('left-fighter-indicator');
     refs.rightPlayerHealth = document.getElementById('right-fighter-indicator');
 };
 
-// Initialize the players with their initial properties
+// Calculate the hit power of a fighter
 
 export function getHitPower(fighter) {
     const { attack } = fighter;
